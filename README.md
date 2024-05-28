@@ -1,8 +1,8 @@
-# orders-app
-## The Orders app, in single and multi-cluster formats. Based on the Colorwheel app.
+# orders-app-oha-bb
+## The Orders app, in single and multi-cluster formats. Uses oha for load generation and bb as the server.
 ### Tom Dean | Buoyant
 
-Last updated 4/11/24
+Last updated 5/28/24
 
 Repository contents:
 
