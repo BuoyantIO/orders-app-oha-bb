@@ -4,6 +4,10 @@
 
 Last updated 5/28/24
 
+## Introduction
+
+This repository contains the Orders app, in single and multi-cluster formats. Uses oha for load generation and bb as the server.
+
 Repository contents:
 
 ```bash
@@ -60,3 +64,37 @@ Repository contents:
         ├── warehouse-chicago.yaml
         └── warehouse-oakland.yaml
 ```
+
+## IMPORTANT! Building the `oha` Load Generator
+
+_You will need build the container image for the `oha` load generator for the `orders-*` deployments._  The `cluster_setup.sh` script will import the `hatoo/oha:latest` container image from Docker for you, but it has to be in the Docker container registry first.
+
+[oha](https://github.com/hatoo/oha)
+
+### Step 1: Clone the `oha` GitHub Repository
+
+Clone the repository to your machine:
+
+```bash
+git clone https://github.com/hatoo/oha.git
+```
+
+Change directory:
+
+```bash
+cd oha
+```
+
+### Step 2: Build the `oha` Container Image
+
+```bash
+docker build . -t hatoo/oha:latest
+```
+
+Check your work:
+
+```bash
+docker images
+```
+
+You should see the `hatoo/oha:latest` container image.
