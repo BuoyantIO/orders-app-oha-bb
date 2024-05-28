@@ -5,37 +5,31 @@ metadata:
   name: orders-east
   namespace: orders
   labels:
-    app: orders-east
+    app: orders
 spec:
-  replicas: 1
+  replicas: 3
   selector:
     matchLabels:
-      app: orders-east
+      app: orders
   template:
     metadata:
       labels:
-        app: orders-east
+        app: orders
       annotations:
         linkerd.io/inject: enabled
     spec:
       containers:
-      - name: colorz
-        image: ghcr.io/olix0r/colorwheel:v1
-        imagePullPolicy: Always
-        env:
-          - name: RUST_LOG
-            value: info,colorwheel=debug
-        args:
-          - brush
-          - /colorwheel/brush/config.yml
-        volumeMounts:
-        - name: config-volume
-          mountPath: /colorwheel/brush
-      volumes:
-      - name: config-volume
-        configMap:
-          name: orders-east-config
-          optional: false
+      - name: oha
+        image: hatoo/oha:latest
+        imagePullPolicy: Never
+        args: ["-q", "10", "-z", "525600m", "http://fulfillment.orders.svc.cluster.local"]
+        resources:
+          requests:
+            cpu: 10m
+            memory: 10Mi
+          limits:
+            cpu: 1000m
+            memory: 100Mi
       affinity:
         nodeAffinity:
           requiredDuringSchedulingIgnoredDuringExecution:
@@ -44,16 +38,3 @@ spec:
               - key: topology.kubernetes.io/zone
                 operator: In
                 values: [zone-east]
----
-apiVersion: v1
-kind: ConfigMap
-metadata:
-  name: orders-east-config
-  namespace: orders
-  labels:
-    app: orders-east
-data:
-  config.yml: |
-    requestsPerSecond: 50
-    reportIntervalSeconds: 10
-    uri: http://fulfillment-warehouse.orders.svc.cluster.local
