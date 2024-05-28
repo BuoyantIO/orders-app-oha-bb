@@ -21,7 +21,7 @@ spec:
       containers:
       - name: oha
         image: hatoo/oha:latest
-        args: ["-q", "10", "-z", "525600m", "http://fulfillment.orders.svc.cluster.local"]
+        args: ["-q", "10", "-z", "525600m", "http://fulfillment-warehouse.orders.svc.cluster.local"]
         resources:
           requests:
             cpu: 10m
