@@ -8,7 +8,7 @@ metadata:
     color: warehouse-oakland
     app: fulfillment
 spec:
-  replicas: 1
+  replicas: 3
   selector:
     matchLabels:
       color: warehouse-oakland
@@ -20,16 +20,11 @@ spec:
         app: fulfillment
     spec:
       containers:
-      - name: colorz
-        image: ghcr.io/olix0r/colorwheel:v3
+      - name: bb
+        image: docker.io/buoyantio/bb:v0.0.7
         ports:
         - containerPort: 8080
-        env:
-        - name: RUST_LOG
-          value: info
-        args:
-        - paint
-        - /colorwheel/paint/red.yml
+        args: ["terminus", "--h1-server-port", "8080", "--sleep-in-millis", "200", "--response-text", "success"]
         resources:
           requests:
             cpu: 10m # Overprovision
@@ -47,14 +42,6 @@ spec:
             port: 8080
           initialDelaySeconds: 5
           periodSeconds: 10
-        volumeMounts:
-        - name: config-volume
-          mountPath: /colorwheel/paint
-      volumes:
-      - name: config-volume
-        configMap:
-          name: warehouse-config
-          optional: false
       affinity:
         nodeAffinity:
           requiredDuringSchedulingIgnoredDuringExecution:
